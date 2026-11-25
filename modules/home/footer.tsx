@@ -1,8 +1,12 @@
+"use client"
+
 import Link from "next/link";
-import { Github as LucideGithub } from "lucide-react";
+import { FaGithub as LucideGithub } from "react-icons/fa6";
 
 
-
+// const start  = performance.now 
+// doWork()
+// const ms = performance.now - start
 
 export function Footer() {
   const socialLinks = [

@@ -12,7 +12,7 @@ export function Header() {
           {/* Rest of the header content */}
           <div className="flex items-center justify-center w-full flex-col">
             <div
-              className={`
+              className={`\
                             flex items-center justify-between
                             bg-linear-to-b from-white/90 via-gray-50/90 to-white/90
                             dark:from-zinc-900/90 dark:via-zinc-800/90 dark:to-zinc-900/90
