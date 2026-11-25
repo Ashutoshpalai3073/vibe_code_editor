@@ -89,12 +89,12 @@ export default function ProjectTable({
  
 
   const handleEditClick = (project: Project) => {
-    setSelectedProject(project);
-    setEditData({
-      title: project.title,
-      description: project.description || "",
-    });
-    setEditDialogOpen(true);
+     setSelectedProject(project)
+     setEditData({
+      title:project.title,
+      description:project.description || ""
+     })
+     setEditDialogOpen(true)
   };
 
   const handleDeleteClick = async (project: Project) => {
