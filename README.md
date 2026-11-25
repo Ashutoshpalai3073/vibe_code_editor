@@ -20,6 +20,29 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## MongoDB and Prisma
+
+This project uses Prisma 6.19.3 because Prisma 7 does not currently support MongoDB. The Prisma schema reads the connection string from `MONGODB_URI` in `.env`; keep that file private.
+
+Push the schema (MongoDB uses `db push`, not Prisma Migrate) and build:
+
+```bash
+npm install
+npm run db:push
+npm run build
+```
+
+The starter schema defines a `User` model in `prisma/schema.prisma`. Use the shared Prisma Client from `lib/prisma.ts` in server-side code only.
+
+## Google and GitHub sign-in
+
+Set `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_GITHUB_ID`, and `AUTH_GITHUB_SECRET` in `.env`. Register these local callback URLs with the corresponding OAuth apps:
+
+- Google: `http://localhost:3000/api/auth/callback/google`
+- GitHub: `http://localhost:3000/api/auth/callback/github`
+
+After sign-in, users are sent to `/dashboard`. Use the production domain in each provider's callback settings when deploying.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
