@@ -1,61 +1,34 @@
-import { Suspense } from "react";
-import Link from "next/link";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
-import UserButton from "@/modules/auth/components/user-button";
+import { deleteProjectById, duplicateProjectById, editProjectById, getAllPlaygroundForUser } from "@/modules/dashboard/actions";
+import AddNewButton from "@/modules/dashboard/components/add-new";
+import AddRepo from "@/modules/dashboard/components/add-repo";
+import EmptyState from "@/modules/dashboard/components/empty-state";
+import ProjectTable from "@/modules/dashboard/components/project-table";
+import React from "react";
 
-function DashboardLoading() {
+const Page = async () => {
+  const playgrounds = await getAllPlaygroundForUser();
+  console.log("Playgrounds:", playgrounds);
   return (
-    <div
-      className="mx-auto mt-12 h-48 max-w-5xl animate-pulse rounded-xl bg-muted"
-      aria-label="Loading dashboard"
-    />
+    <div className="flex flex-col justify-start items-center min-h-screen mx-auto max-w-7xl px-4 py-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        <AddNewButton />
+        <AddRepo />
+      </div>
+
+      <div className="mt-10 flex flex-col justify-center items-center w-full">
+        {playgrounds && playgrounds.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <ProjectTable
+            projects={playgrounds || []}
+            onDeleteProject={deleteProjectById}
+            onUpdateProject={editProjectById}
+            onDuplicateProject={duplicateProjectById}
+          />
+        )}
+      </div>
+    </div>
   );
-}
+};
 
-async function AuthenticatedDashboard() {
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect("/auth/sign-in");
-  }
-
-  return (
-    <>
-      <header className="flex items-center justify-between border-b bg-background px-6 py-4">
-        <Link href="/dashboard" className="text-lg font-semibold">
-          VibeCode Editor
-        </Link>
-        <div className="flex items-center gap-3">
-          <span className="hidden text-sm text-muted-foreground sm:inline">
-            {session.user.email}
-          </span>
-          <UserButton />
-        </div>
-      </header>
-
-      <section className="mx-auto max-w-5xl px-6 py-12">
-        <p className="text-sm font-medium text-primary">Dashboard</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight">
-          Welcome back{session.user.name ? `, ${session.user.name}` : ""}.
-        </h1>
-        <div className="mt-8 rounded-xl border bg-background p-6">
-          <h2 className="text-lg font-medium">You’re signed in</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Your account is ready. Manage your session from the profile menu.
-          </p>
-        </div>
-      </section>
-    </>
-  );
-}
-
-export default function DashboardPage() {
-  return (
-    <main className="min-h-screen bg-muted/40">
-      <Suspense fallback={<DashboardLoading />}>
-        <AuthenticatedDashboard />
-      </Suspense>
-    </main>
-  );
-}
+export default Page;

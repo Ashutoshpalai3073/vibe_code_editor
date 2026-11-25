@@ -159,7 +159,7 @@ const TemplateSelectionModal = ({
     const matchesCategory =
       category === "all" || template.category === category;
 
-    return matchesCategory && matchesSearch;
+    return matchesCategory && matchesSearch
   });
 
   const handleSelectTemplate = (templateId: string) => {
@@ -185,13 +185,18 @@ const TemplateSelectionModal = ({
         hono: "HONO",
         angular: "ANGULAR",
       };
+    
 
-      const template = templates.find((t) => t.id === selectedTemplate);
+      const template = templates.find((t) => t.id === selectedTemplate)
       onSubmit({
         title:projectName || `New ${template?.name} Project`,
         template:templateMap[selectedTemplate] || "REACT",
         description:template?.description
       })
+   
+   
+
+
       onClose();
       // Reset state for next time
       setStep("select");

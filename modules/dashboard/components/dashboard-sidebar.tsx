@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Code2,
   Compass,
@@ -59,6 +58,7 @@ const lucideIconMap: Record<string, LucideIcon> = {
 
 export function DashboardSidebar({ initialPlaygroundData }: { initialPlaygroundData: PlaygroundData[] }) {
   const pathname = usePathname()
+  const router = useRouter()
   const [starredPlaygrounds, setStarredPlaygrounds] = useState(initialPlaygroundData.filter((p) => p.starred))
   const [recentPlaygrounds, setRecentPlaygrounds] = useState(initialPlaygroundData)
 
@@ -74,19 +74,15 @@ export function DashboardSidebar({ initialPlaygroundData }: { initialPlaygroundD
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === "/"} tooltip="Home">
-                <Link href="/">
-                  <Home className="h-4 w-4" />
-                  <span>Home</span>
-                </Link>
+              <SidebarMenuButton onClick={() => router.push("/")} isActive={pathname === "/"} tooltip="Home">
+                <Home className="h-4 w-4" />
+                <span>Home</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === "/dashboard"} tooltip="Dashboard">
-                <Link href="/dashboard">
-                  <LayoutDashboard className="h-4 w-4" />
-                  <span>Dashboard</span>
-                </Link>
+              <SidebarMenuButton onClick={() => router.push("/dashboard")} isActive={pathname === "/dashboard"} tooltip="Dashboard">
+                <LayoutDashboard className="h-4 w-4" />
+                <span>Dashboard</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           
@@ -112,14 +108,12 @@ export function DashboardSidebar({ initialPlaygroundData }: { initialPlaygroundD
                   return (
                     <SidebarMenuItem key={playground.id}>
                       <SidebarMenuButton
-                        asChild
+                        onClick={() => router.push(`/playground/${playground.id}`)}
                         isActive={pathname === `/playground/${playground.id}`}
                         tooltip={playground.name}
                       >
-                        <Link href={`/playground/${playground.id}`}>
-                          {IconComponent && <IconComponent className="h-4 w-4" />}
-                          <span>{playground.name}</span>
-                        </Link>
+                        {IconComponent && <IconComponent className="h-4 w-4" />}
+                        <span>{playground.name}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   );
@@ -145,24 +139,20 @@ export function DashboardSidebar({ initialPlaygroundData }: { initialPlaygroundD
                   return (
                     <SidebarMenuItem key={playground.id}>
                       <SidebarMenuButton
-                        asChild
-                        isActive={pathname === `playground/${playground.id}`}
+                        onClick={() => router.push(`/playground/${playground.id}`)}
+                        isActive={pathname === `/playground/${playground.id}`}
                         tooltip={playground.name}
                       >
-                        <Link href={`/playground/${playground.id}`}>
-                          {IconComponent && <IconComponent className="h-4 w-4" />}
-                          <span>{playground.name}</span>
-                        </Link>
+                        {IconComponent && <IconComponent className="h-4 w-4" />}
+                        <span>{playground.name}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   );
                 })
               )}
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="View all">
-                  <Link href="/playgrounds">
-                    <span className="text-sm text-muted-foreground">View all playgrounds</span>
-                  </Link>
+                <SidebarMenuButton onClick={() => router.push("/playgrounds")} tooltip="View all">
+                  <span className="text-sm text-muted-foreground">View all playgrounds</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -172,11 +162,9 @@ export function DashboardSidebar({ initialPlaygroundData }: { initialPlaygroundD
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip="Settings">
-              <Link href="/settings">
-                <Settings className="h-4 w-4" />
-                <span>Settings</span>
-              </Link>
+            <SidebarMenuButton onClick={() => router.push("/settings")} tooltip="Settings">
+              <Settings className="h-4 w-4" />
+              <span>Settings</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
